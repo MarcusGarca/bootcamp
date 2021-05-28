@@ -1,0 +1,57 @@
+package com.project.bootcamp.controller;
+
+import com.project.bootcamp.model.dto.StockDTO;
+import com.project.bootcamp.service.StockService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+
+@CrossOrigin
+@RestController
+@RequestMapping(value="/stock")
+public class StockController {
+
+    @Autowired
+    private StockService service;
+
+//End Point - Inserir
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StockDTO> save(@Valid @RequestBody StockDTO dto){
+        return ResponseEntity.ok(service.save(dto));
+    }
+
+// End Point - Alterar
+    @PutMapping (consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StockDTO> update(@Valid @RequestBody StockDTO dto){
+        return ResponseEntity.ok(service.update(dto));
+    }
+
+// End Point - Buscar lista
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public  ResponseEntity<List<StockDTO>> findAll(){
+        return ResponseEntity.ok(service.findAll());
+    }
+
+// End Point - Buscar pelo Id
+    @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StockDTO> findById(@PathVariable Long id){
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+// End Point - Deletar
+    @DeleteMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StockDTO> delete(@PathVariable Long id){
+        return ResponseEntity.ok(service.delete(id));
+    }
+
+// End Point - Buscar Lista dia
+    @GetMapping(value = "/Today", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StockDTO>> findByToday(){
+        return ResponseEntity.ok(service.findByToday());
+    }
+
+}
